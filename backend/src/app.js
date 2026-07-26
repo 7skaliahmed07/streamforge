@@ -13,6 +13,12 @@ const errorHandler =
 const productRoutes =
     require("./routes/product.routes");
 
+const orderRoutes =
+    require("./routes/order.routes");
+
+const inventoryRoutes =
+    require("./routes/inventory.routes");
+
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
@@ -27,6 +33,16 @@ app.use(
 app.use(
     "/api/v1/products",
     productRoutes
+);
+
+app.use(
+    "/api/v1/orders",
+    orderRoutes
+);
+
+app.use(
+    "/api/v1/inventory",
+    inventoryRoutes
 );
 
 
