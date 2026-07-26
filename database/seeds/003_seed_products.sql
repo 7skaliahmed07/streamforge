@@ -10,4 +10,7 @@ VALUES
 
 ('Monitor', 'Electronics', 300.00)
 
-ON CONFLICT DO NOTHING;
+ON CONFLICT (name)
+DO UPDATE SET
+category = EXCLUDED.category,
+price = EXCLUDED.price;
