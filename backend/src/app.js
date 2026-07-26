@@ -3,13 +3,16 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
+// Import routes
 const customerRoutes =
     require("./routes/customer.routes");
 const app = express();
 
+// Import Error Middleware
 const errorHandler =
     require("./middleware/error.middleware");
 
+// Import routes
 const productRoutes =
     require("./routes/product.routes");
 
@@ -18,6 +21,10 @@ const orderRoutes =
 
 const inventoryRoutes =
     require("./routes/inventory.routes");
+
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./docs/swagger");
 
 app.use(cors());
 app.use(helmet());
@@ -43,6 +50,12 @@ app.use(
 app.use(
     "/api/v1/inventory",
     inventoryRoutes
+);
+
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec)
 );
 
 
