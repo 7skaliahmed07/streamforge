@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate": "node scripts/generate_dutch_retail_data.js",
-     "clear": "node scripts/clear_data.js"
+     "clear": "node scripts/clear_data.js",
+     "inventory": "node scripts/generate_inventory_data.js"
 
   },
   "keywords": [],
