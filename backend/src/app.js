@@ -23,6 +23,10 @@ const inventoryRoutes =
     require("./routes/inventory.routes");
 
 
+const analyticsRoutes =
+    require("./routes/analyticsRoutes");
+
+
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./docs/swagger");
 
@@ -58,6 +62,11 @@ app.use(
     swaggerUi.setup(swaggerSpec)
 );
 
+
+app.use(
+    "/api/v1/analytics",
+    analyticsRoutes
+);
 
 
 app.get("/api/v1/health", (req, res) => {
