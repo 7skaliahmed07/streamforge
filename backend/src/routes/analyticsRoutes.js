@@ -21,4 +21,30 @@ router.get(
     analyticsController.getCategorySales
 );
 
+router.get(
+    "/payment-methods",
+    analyticsController.getPaymentMethods
+);
+
+router.get(
+    "/revenue-trend",
+    analyticsController.getRevenueTrend
+);
+
+router.get(
+    "/inventory-status",
+    analyticsController.getInventoryStatus
+);
+
+router.get(
+    "/city-sales",
+    analyticsController.getCitySales
+);
+
+router.get(
+    "/customer-segments",
+    analyticsController.getCustomerSegments
+);
+
+
 module.exports = router;
