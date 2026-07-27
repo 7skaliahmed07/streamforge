@@ -1,0 +1,5 @@
+ALTER TABLE customers
+ADD COLUMN city VARCHAR(100),
+ADD COLUMN postal_code VARCHAR(20),
+ADD COLUMN country VARCHAR(100) DEFAULT 'Netherlands',
+ADD COLUMN customer_segment VARCHAR(50);

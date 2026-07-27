@@ -1,0 +1,4 @@
+ALTER TABLE orders
+ADD COLUMN order_number VARCHAR(50),
+ADD COLUMN currency VARCHAR(10) DEFAULT 'EUR',
+ADD COLUMN shipping_city VARCHAR(100);
