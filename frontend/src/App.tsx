@@ -1,30 +1,11 @@
-import { Typography } from "@mui/material";
-import { Box } from "@mui/material";
+import Router from "./router";
 
-function App() {
 
-    return (
+function App(){
 
-        <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100vh"
-        >
-
-            <Typography
-                variant="h3"
-                fontWeight={700}
-            >
-
-                🚀 StreamForge Retail Intelligence
-
-            </Typography>
-
-        </Box>
-
-    );
+    return <Router/>;
 
 }
+
 
 export default App;
