@@ -2,17 +2,167 @@ import {
 
     Typography,
 
-    Paper
+    Box
 
 } from "@mui/material";
+
+
+import {
+
+    useSummary,
+
+    useRevenueTrend,
+
+    useCategorySales,
+
+    usePaymentMethods,
+    
+    useCitySales,
+
+    useTopProducts,
+
+    useInventoryStatus,
+
+    useCustomerSegments
+
+} from "../hooks/useAnalytics";
+
+
+import KPIGrid from "../components/dashboard/KPIGrid";
+
+import RevenueTrendChart from "../components/charts/RevenueTrendChart";
+
+import CategorySalesChart from "../components/charts/CategorySalesChart";
+
+import PaymentMethodsChart from "../components/charts/PaymentMethodsChart";
+
+import CitySalesChart from "../components/charts/CitySalesChart";
+
+import TopProductsTable from "../components/tables/TopProductsTable";
+
+import InventoryRiskTable from "../components/tables/InventoryRiskTable";
+
+import CustomerSegmentChart from "../components/charts/CustomerSegmentChart";
 
 
 function Dashboard(){
 
 
+    const {
+
+        data:summary,
+
+        isLoading:summaryLoading
+
+
+    } = useSummary();
+
+
+    const {
+        data:categorySales,
+
+        isLoading:categoryLoading
+
+    } = useCategorySales();
+
+
+
+    const {
+
+        data:revenueTrend,
+
+        isLoading:trendLoading
+
+
+    } = useRevenueTrend();
+
+
+    const {
+
+        data:paymentMethods,
+
+        isLoading:paymentLoading
+
+
+    } = usePaymentMethods();
+
+
+    const {
+
+        data:citySales,
+
+        isLoading:cityLoading
+
+
+    } = useCitySales();
+
+    const {
+
+        data:topProducts,
+
+        isLoading:productsLoading
+
+    } = useTopProducts();
+
+    const {
+
+    data:inventoryStatus,
+
+    isLoading:inventoryLoading
+
+    } = useInventoryStatus();
+
+
+    const {
+
+    data:customerSegments,
+
+    isLoading:customerLoading
+
+    } = useCustomerSegments();
+
+
+
+
+    if(
+
+    summaryLoading ||
+
+    trendLoading ||
+
+    categoryLoading ||
+
+    paymentLoading ||
+
+    cityLoading ||
+    
+    productsLoading ||
+
+    inventoryLoading ||
+
+    customerLoading
+
+    ){
+
+        return (
+
+            <Typography>
+
+                Loading dashboard please wait...
+
+            </Typography>
+
+        );
+
+    }
+
+
+
+
     return (
 
-        <>
+        <Box>
+
 
             <Typography
 
@@ -20,7 +170,7 @@ function Dashboard(){
 
                 fontWeight={700}
 
-                mb={3}
+                mb={4}
 
             >
 
@@ -29,29 +179,63 @@ function Dashboard(){
             </Typography>
 
 
-            <Paper
 
-                sx={{
+            <KPIGrid
 
-                    p:5,
+                data={summary}
 
-                    borderRadius:3
-
-                }}
-
-            >
-
-                Dashboard analytics coming next 🚀
+            />
 
 
-            </Paper>
 
+            <RevenueTrendChart
 
-        </>
+                data={revenueTrend || []}
+
+            />
+
+            <CategorySalesChart
+
+                data={categorySales || []}
+            />
+
+            <PaymentMethodsChart
+
+                data={paymentMethods || []}
+
+            />
+
+            <CitySalesChart
+
+                data={citySales || []}
+
+            />
+
+            <TopProductsTable
+
+                data={topProducts  || []}
+
+            />
+
+            <InventoryRiskTable
+
+                data={inventoryStatus || []}
+
+            />
+
+            <CustomerSegmentChart
+
+            data={customerSegments || []}
+
+            />
+
+        </Box>
 
     );
 
+
 }
+
 
 
 export default Dashboard;

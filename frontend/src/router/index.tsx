@@ -1,9 +1,7 @@
 import {
-
     Routes,
-
-    Route
-
+    Route,
+    Outlet
 } from "react-router-dom";
 
 
@@ -12,35 +10,36 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Dashboard from "../pages/Dashboard";
 
 
-function Router(){
+function Layout() {
 
+    return (
+
+        <DashboardLayout>
+
+            <Outlet />
+
+        </DashboardLayout>
+
+    );
+
+}
+
+
+
+function Router() {
 
     return (
 
         <Routes>
 
-
             <Route
-
-                element={
-
-                    <DashboardLayout>
-
-                    </DashboardLayout>
-
-                }
-
+                element={<Layout />}
             >
 
-
                 <Route
-
                     path="/"
-
-                    element={<Dashboard/>}
-
+                    element={<Dashboard />}
                 />
-
 
             </Route>
 
