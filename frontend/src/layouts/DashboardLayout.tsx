@@ -1,26 +1,24 @@
 import {
+    Outlet
+} from "react-router-dom";
 
-    Box,
 
-    Toolbar
-
+import {
+    Box
 } from "@mui/material";
 
 
-import Sidebar from "../components/layout/Sidebar";
+import Sidebar
+from "./Sidebar";
 
-import Topbar from "../components/layout/Topbar";
+
+import Header
+from "./Header";
 
 
-function DashboardLayout({
 
-    children
 
-}:{
-
-    children:React.ReactNode
-
-}){
+export default function DashboardLayout(){
 
 
     return (
@@ -35,37 +33,39 @@ function DashboardLayout({
 
         >
 
+
+            <Header />
+
+
             <Sidebar />
 
 
-            <Topbar />
+                    <Box
 
+                    component="main"
 
-            <Box
+                    sx={{
 
-                component="main"
+                        flexGrow:1,
 
-                sx={{
+                        p:4,
 
-                    flexGrow:1,
+                        // ml:"260px",
 
-                    p:3,
+                        mt:"64px",
 
-                    minHeight:"100vh",
+                        background:"#f8fafc",
 
-                    background:"#f8fafc"
+                        minHeight:"100vh"
 
-                }}
+                    }}
 
-            >
+        >
 
-                <Toolbar/>
+            <Outlet />  
 
+        </Box>
 
-                {children}
-
-
-            </Box>
 
 
         </Box>
@@ -73,6 +73,3 @@ function DashboardLayout({
     );
 
 }
-
-
-export default DashboardLayout;

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import {
 
     Typography,
@@ -45,7 +46,7 @@ import InventoryRiskTable from "../components/tables/InventoryRiskTable";
 import CustomerSegmentChart from "../components/charts/CustomerSegmentChart";
 
 
-function Dashboard(){
+function Overview(){
 
 
     const {
@@ -148,7 +149,7 @@ function Dashboard(){
 
             <Typography>
 
-                Loading dashboard please wait...
+                Loading Overview please wait...
 
             </Typography>
 
@@ -160,6 +161,11 @@ function Dashboard(){
 
 
     return (
+        <motion.div
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8}}
+        >
 
         <Box>
 
@@ -174,7 +180,7 @@ function Dashboard(){
 
             >
 
-                Retail Overview
+                Overview
 
             </Typography>
 
@@ -230,6 +236,7 @@ function Dashboard(){
             />
 
         </Box>
+        </motion.div>
 
     );
 
@@ -238,4 +245,4 @@ function Dashboard(){
 
 
 
-export default Dashboard;
+export default Overview;
