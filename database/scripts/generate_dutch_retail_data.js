@@ -4,6 +4,24 @@ const { Pool } = require("pg");
 
 const { faker } = require("@faker-js/faker");
 
+const { exec } = require("child_process");
+const { promisify } = require("util");
+
+const execAsync = promisify(exec);
+
+
+async function runScript(script){
+
+    console.log(`Running ${script}...`);
+
+    await execAsync(
+        `node scripts/${script}`
+    );
+
+    console.log(`${script} completed`);
+
+}
+
 
 const pool = new Pool({
 
@@ -33,6 +51,10 @@ const customerSegments = [
     "Regular",
     "New Customer"
 ];
+
+
+
+
 
 async function generateCustomers(){
 
@@ -258,6 +280,20 @@ async function generateProducts() {
 
 }
 
+
+async function runScript(script){
+
+    console.log(`Running ${script}...`);
+
+    await execAsync(
+        `node scripts/${script}`
+    );
+
+    console.log(`${script} completed`);
+
+}
+
+
 async function main(){
 
     try {
@@ -267,7 +303,29 @@ async function main(){
         await generateProducts();
 
 
-        console.log("Dutch retail data generation completed");
+        await runScript(
+            "generate_orders.js"
+        );
+
+
+        await runScript(
+            "generate_order_items.js"
+        );
+
+
+        await runScript(
+            "generate_payments.js"
+        );
+
+
+        await runScript(
+            "generate_inventory.js"
+        );
+
+
+        console.log(
+            "Dutch retail data generation completed"
+        );
 
 
     } catch(error){
@@ -275,7 +333,6 @@ async function main(){
         console.error(error);
 
         process.exit(1);
-
 
     } finally {
 

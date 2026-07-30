@@ -22,6 +22,7 @@ import {
     getCustomerSegments
 
 } from "../services/analytics.service";
+import api from "../services/api";
 
 
 
@@ -154,6 +155,101 @@ export function useCustomerSegments(){
         ],
 
         queryFn:getCustomerSegments
+
+    });
+
+}
+
+
+
+
+
+
+export function useSalesKPIs(){
+
+    return useQuery({
+
+        queryKey:["sales-kpis"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/sales/kpis"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useMonthlySales(){
+
+    return useQuery({
+
+        queryKey:["monthly-sales"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/sales/monthly"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useWeeklySales(){
+
+    return useQuery({
+
+        queryKey:["weekly-sales"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/sales/weekly"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useTopRevenueDays(){
+
+    return useQuery({
+
+        queryKey:["top-revenue-days"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/sales/top-days"
+                );
+
+            return response.data.data;
+
+        }
 
     });
 

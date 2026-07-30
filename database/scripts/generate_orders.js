@@ -60,10 +60,33 @@ function randomAmount(){
 }
 
 
-function generateOrderNumber(index){
+function randomDate(){
+
+    const start = new Date("2025-01-01");
+
+    const end = new Date("2026-07-31");
+
+
+    const date = new Date(
+
+        start.getTime() +
+
+        Math.random() *
+        (end.getTime() - start.getTime())
+
+    );
+
+
+    return date;
+
+}
+
+
+
+function generateOrderNumber(index, createdAt){
 
     const date =
-        new Date()
+        createdAt
         .toISOString()
         .slice(0,10)
         .replace(/-/g,"");
@@ -138,8 +161,15 @@ async function generateOrders(){
 
 
 
+                const createdAt =
+                    randomDate();
+
+
                 const orderNumber =
-                    generateOrderNumber(orderIndex);
+                    generateOrderNumber(
+                        orderIndex,
+                        createdAt
+                    );
 
 
                 const status =
@@ -156,27 +186,29 @@ async function generateOrders(){
 
 
                 const offset =
-                    i * 6;
+                    i * 7;
 
 
                 placeholders.push(
-                    `($${offset+1},
-                      $${offset+2},
-                      $${offset+3},
-                      $${offset+4},
-                      $${offset+5},
-                      $${offset+6})`
+                `($${offset+1},
+                    $${offset+2},
+                    $${offset+3},
+                    $${offset+4},
+                    $${offset+5},
+                    $${offset+6},
+                    $${offset+7})`
                 );
 
 
                 values.push(
-                    customer.id,
-                    status,
-                    amount,
-                    orderNumber,
-                    "EUR",
-                    city
-                );
+                customer.id,
+                status,
+                amount,
+                orderNumber,
+                "EUR",
+                city,
+                createdAt
+            );
 
 
             }
@@ -187,12 +219,13 @@ async function generateOrders(){
                 `
                 INSERT INTO orders
                 (
-                    customer_id,
-                    order_status,
-                    total_amount,
-                    order_number,
-                    currency,
-                    shipping_city
+                        customer_id,
+                        order_status,
+                        total_amount,
+                        order_number,
+                        currency,
+                        shipping_city,
+                        created_at
                 )
 
                 VALUES
