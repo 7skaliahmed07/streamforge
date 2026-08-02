@@ -254,3 +254,15 @@ export function useTopRevenueDays(){
     });
 
 }
+
+
+
+export const useCustomerKPIs()
+
+export const useCustomerGrowth()
+
+export const useCustomerSegments()
+
+export const useTopCustomers()
+
+export const useCustomerCities()
