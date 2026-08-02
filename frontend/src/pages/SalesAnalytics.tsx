@@ -800,19 +800,15 @@ function SalesAnalytics(){
 
             €{
 
-            Number(
-
-            day.revenue
-
+            Number(day.revenue).toLocaleString(
+                "en-US",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
             )
 
-            .toLocaleString()
-
             }
-
-
-
-
 
             </Typography>
 
