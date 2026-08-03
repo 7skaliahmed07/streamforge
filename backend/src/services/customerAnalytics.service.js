@@ -58,31 +58,51 @@ exports.getGrowth = async () => {
 
     const query = `
 
+        WITH months AS (
+
+            SELECT 
+                generate_series(
+                    DATE '2025-01-01',
+                    DATE '2026-12-01',
+                    INTERVAL '1 month'
+                ) AS month
+
+        )
+
         SELECT
 
             TO_CHAR(
-
-                DATE_TRUNC('month',created_at),
-
+                months.month,
                 'Mon'
-
             ) AS month,
 
-            COUNT(*) AS customers
 
-        FROM customers
+            COUNT(customers.id) AS customers
+
+
+        FROM months
+
+
+        LEFT JOIN customers
+
+        ON customers.created_at 
+            < months.month + INTERVAL '1 month'
+
 
         GROUP BY
 
-            DATE_TRUNC('month',created_at)
+            months.month
+
 
         ORDER BY
 
-            DATE_TRUNC('month',created_at);
+            months.month;
 
     `;
 
+
     const result = await pool.query(query);
+
 
     return result.rows;
 

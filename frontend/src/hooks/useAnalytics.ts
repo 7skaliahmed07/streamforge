@@ -19,11 +19,14 @@ import {
 
     getCitySales,
 
-    getCustomerSegments
+    // getCustomerSegments
 
 } from "../services/analytics.service";
 import api from "../services/api";
 
+import axios from "axios";
+
+const API = "http://localhost:5001/api/v1";
 
 
 
@@ -146,19 +149,19 @@ export function useCitySales(){
 
 
 
-export function useCustomerSegments(){
+// export function useCustomerSegments(){
 
-    return useQuery({
+//     return useQuery({
 
-        queryKey:[
-            "customer-segments"
-        ],
+//         queryKey:[
+//             "customer-segments"
+//         ],
 
-        queryFn:getCustomerSegments
+//         queryFn:getCustomerSegments
 
-    });
+//     });
 
-}
+// }
 
 
 
@@ -255,14 +258,115 @@ export function useTopRevenueDays(){
 
 }
 
+export function useCustomerKPIs(){
+
+    return useQuery({
+
+        queryKey:["customer-kpis"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/customers/analytics/kpis"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
 
 
-export const useCustomerKPIs()
 
-export const useCustomerGrowth()
+export function useCustomerGrowth(){
 
-export const useCustomerSegments()
+    return useQuery({
 
-export const useTopCustomers()
+        queryKey:["customer-growth"],
 
-export const useCustomerCities()
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/customers/analytics/growth"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useCustomerSegments(){
+
+    return useQuery({
+
+        queryKey:["customer-segments"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/customers/analytics/segments"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useCustomerCities(){
+
+    return useQuery({
+
+        queryKey:["customer-cities"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/customers/analytics/cities"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useTopCustomers(){
+
+    return useQuery({
+
+        queryKey:["top-customers"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/customers/analytics/top-customers"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
