@@ -19,10 +19,26 @@ import {
 
     getCitySales,
 
-    getInventoryStockStatus
+    getInventoryStockStatus,
+
+
+    
 
 
 } from "../services/analytics.service";
+
+
+import {
+
+    getPaymentKPIs,
+
+    getPaymentStatus,
+
+    getMonthlyPaymentRevenue
+
+} from "../services/payment.service";
+
+
 import api from "../services/api";
 
 import axios from "axios";
@@ -665,6 +681,70 @@ export function useInventoryLowStock(){
             return response.data.data;
 
         }
+
+    });
+
+}
+
+
+
+export function usePaymentAnalyticsKPIs(){
+
+    return useQuery({
+
+        queryKey:[
+            "payment-kpis"
+        ],
+
+        queryFn:getPaymentKPIs
+
+    });
+
+}
+
+
+
+export function usePaymentAnalyticsMethods(){
+
+    return useQuery({
+
+        queryKey:[
+            "payment-analytics-methods"
+        ],
+
+        queryFn:getPaymentMethods
+
+    });
+
+}
+
+
+
+export function usePaymentAnalyticsStatus(){
+
+    return useQuery({
+
+        queryKey:[
+            "payment-analytics-status"
+        ],
+
+        queryFn:getPaymentStatus
+
+    });
+
+}
+
+
+
+export function usePaymentMonthlyRevenue(){
+
+    return useQuery({
+
+        queryKey:[
+            "monthly-payment-revenue"
+        ],
+
+        queryFn:getMonthlyPaymentRevenue
 
     });
 

@@ -38,6 +38,9 @@ const productAnalyticsRoutes =
 const inventoryAnalyticsRoutes =
     require("./routes/inventoryAnalytics.routes");
 
+const paymentAnalyticsRoutes =
+    require("./routes/paymentAnalytics.routes");
+
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./docs/swagger");
@@ -99,6 +102,11 @@ app.use(
     "/api/v1/inventory/analytics",
     inventoryAnalyticsRoutes
     );
+
+app.use(
+    "/api/v1/payments/analytics",
+    paymentAnalyticsRoutes
+);
 
 
 app.get("/api/v1/health", (req, res) => {

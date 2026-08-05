@@ -446,6 +446,7 @@ const COLORS = [
                             >
 
                                 <LineChart
+                                
 
                                     data={revenueData}
 
@@ -659,6 +660,10 @@ const COLORS = [
                 data={categoryData}
 
                 layout="vertical"
+                margin={{
+                    right:10,
+                    left:30,
+                }}
 
             >
 
