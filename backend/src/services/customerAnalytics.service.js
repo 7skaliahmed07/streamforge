@@ -14,17 +14,20 @@ exports.getKPIs = async () => {
 
             COUNT(*) AS total_customers,
 
+
             COUNT(*) FILTER (
 
                 WHERE customer_segment='Premium'
 
             ) AS premium_customers,
 
+
             COUNT(*) FILTER (
 
-                WHERE created_at >= NOW() - INTERVAL '10 days'
+                WHERE created_at >= DATE_TRUNC('year', NOW())
 
             ) AS new_customers,
+
 
             COALESCE(
 
@@ -33,14 +36,19 @@ exports.getKPIs = async () => {
                         SUM(total_amount)
                         /
                         COUNT(DISTINCT customer_id)
+
                     FROM orders
                 ),
+
                 0
+
             ) AS average_customer_value
+
 
         FROM customers;
 
     `;
+
 
     const result = await pool.query(query);
 
@@ -58,57 +66,53 @@ exports.getGrowth = async () => {
 
     const query = `
 
-        WITH months AS (
+        WITH monthly AS (
 
-            SELECT 
-                generate_series(
-                    DATE '2025-01-01',
-                    DATE '2026-12-01',
-                    INTERVAL '1 month'
-                ) AS month
+            SELECT
+
+                DATE_TRUNC(
+                    'month',
+                    created_at
+                ) AS month,
+
+                COUNT(*) AS new_customers
+
+
+            FROM customers
+
+
+            GROUP BY month
 
         )
+
 
         SELECT
 
             TO_CHAR(
-                months.month,
-                'Mon'
+                month,
+                'Mon YYYY'
             ) AS month,
 
 
-            COUNT(customers.id) AS customers
+            SUM(new_customers)
+            OVER(
+                ORDER BY month
+            ) AS customers
 
 
-        FROM months
+        FROM monthly
 
 
-        LEFT JOIN customers
-
-        ON customers.created_at 
-            < months.month + INTERVAL '1 month'
-
-
-        GROUP BY
-
-            months.month
-
-
-        ORDER BY
-
-            months.month;
+        ORDER BY month;
 
     `;
 
 
     const result = await pool.query(query);
 
-
     return result.rows;
 
 };
-
-
 
 // =========================
 // Segments
