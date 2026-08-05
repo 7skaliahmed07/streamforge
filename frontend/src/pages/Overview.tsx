@@ -158,6 +158,16 @@ function Overview(){
     }
 
 
+    const customerSegmentData = customerSegments.map(
+    (item:any)=>({
+
+        ...item,
+
+        customers:Number(item.customers)
+
+    })
+);
+
 
 
     return (
@@ -231,7 +241,7 @@ function Overview(){
 
             <CustomerSegmentChart
 
-            data={customerSegments || []}
+            data={customerSegmentData || []}
 
             />
 

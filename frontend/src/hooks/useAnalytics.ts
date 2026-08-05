@@ -19,7 +19,8 @@ import {
 
     getCitySales,
 
-    // getCustomerSegments
+    getInventoryStockStatus
+
 
 } from "../services/analytics.service";
 import api from "../services/api";
@@ -148,20 +149,19 @@ export function useCitySales(){
 
 
 
+export function useInventoryStockStatus(){
 
-// export function useCustomerSegments(){
+    return useQuery({
 
-//     return useQuery({
+        queryKey:[
+            "inventory-stock-status"
+        ],
 
-//         queryKey:[
-//             "customer-segments"
-//         ],
+        queryFn:getInventoryStockStatus
 
-//         queryFn:getCustomerSegments
+    });
 
-//     });
-
-// }
+}
 
 
 
@@ -361,6 +361,305 @@ export function useTopCustomers(){
             const response =
                 await api.get(
                     "/customers/analytics/top-customers"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+export function useProductKPIs() {
+
+    return useQuery({
+
+        queryKey:["product-kpis"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/products/analytics/kpis"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useProductRevenue(){
+
+    return useQuery({
+
+        queryKey:["product-revenue"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/products/analytics/monthly-revenue"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useCategoryRevenue(){
+
+    return useQuery({
+
+        queryKey:["category-revenue"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/products/analytics/categories"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useBrandRevenue(){
+
+    return useQuery({
+
+        queryKey:["brand-revenue"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/products/analytics/brands"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useInventoryValue(){
+
+    return useQuery({
+
+        queryKey:["inventory-value"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/products/analytics/inventory-value"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useLowStockProducts(){
+
+    return useQuery({
+
+        queryKey:["low-stock-products"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/products/analytics/low-stock"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function usePricingDistribution(){
+
+    return useQuery({
+
+        queryKey:["pricing-distribution"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/products/analytics/pricing"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useTopProductsAnalytics(){
+
+    return useQuery({
+
+        queryKey:["top-products-analytics"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/products/analytics/top-products"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+export function useProductPricing(){
+
+    return useQuery({
+
+        queryKey:["product-pricing"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/products/analytics/pricing"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+export function useInventoryKPIs(){
+
+    return useQuery({
+
+        queryKey:["inventory-kpis"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/inventory/analytics/kpis"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+
+// export function useInventoryStatus(){
+
+//     return useQuery({
+
+//         queryKey:["inventory-status"],
+
+//         queryFn: async()=>{
+
+//             const response =
+//                 await api.get(
+//                     "/inventory/analytics/status"
+//                 );
+
+//             return response.data.data;
+
+//         }
+
+//     });
+
+// }
+
+
+
+
+export function useInventoryCategory(){
+
+    return useQuery({
+
+        queryKey:["inventory-category"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/inventory/analytics/category"
+                );
+
+            return response.data.data;
+
+        }
+
+    });
+
+}
+
+
+
+
+export function useInventoryLowStock(){
+
+    return useQuery({
+
+        queryKey:["inventory-low-stock"],
+
+        queryFn: async()=>{
+
+            const response =
+                await api.get(
+                    "/inventory/analytics/low-stock"
                 );
 
             return response.data.data;

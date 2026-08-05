@@ -25,16 +25,6 @@ interface Props {
 }
 
 
-
-// const COLORS = [
-
-//     "#2563eb",
-//     "#16a34a",
-//     "#9333ea",
-//     "#ea580c"
-
-// ];
-
 const COLORS = [
     "#2563eb", // Blue - Regular
     "#16a34a", // Green - Premium

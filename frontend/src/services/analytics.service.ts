@@ -219,6 +219,29 @@ export async function getInventoryStatus(){
 
 }
 
+export async function getInventoryStockStatus(){
+
+    const response = await api.get<{
+
+        success:boolean;
+
+        data:{
+            status:string;
+            products:string;
+        }[];
+
+    }>(
+
+        "/inventory/analytics/status"
+
+    );
+
+
+    return response.data.data;
+
+}
+
+
 
 
 /*

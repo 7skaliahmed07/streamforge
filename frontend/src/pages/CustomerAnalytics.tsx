@@ -122,7 +122,7 @@ export default function CustomerAnalytics() {
       bg: "#FCE7F3",
     },
   ];
-  console.log(growthData);
+  // console.log(growthData);
 
   return (
     <Box>

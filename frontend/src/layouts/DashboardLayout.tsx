@@ -8,17 +8,13 @@ import {
 } from "@mui/material";
 
 
-import Sidebar
-from "./Sidebar";
+import Sidebar from "./Sidebar";
 
-
-import Header
-from "./Header";
+import Header from "./Header";
 
 
 
-
-export default function DashboardLayout(){
+function DashboardLayout(){
 
 
     return (
@@ -27,45 +23,58 @@ export default function DashboardLayout(){
 
             sx={{
 
-                display:"flex"
+                display:"flex",
+
+                minHeight:"100vh"
 
             }}
 
         >
 
 
-            <Header />
-
-
             <Sidebar />
 
 
-                    <Box
+            <Box
+
+                sx={{
+
+                    flexGrow:1
+
+                }}
+
+            >
+
+
+                <Header />
+
+
+                <Box
 
                     component="main"
 
                     sx={{
 
-                        flexGrow:1,
-
                         p:4,
-
-                        // ml:"260px",
 
                         mt:"64px",
 
                         background:"#f8fafc",
 
-                        minHeight:"100vh"
+                        minHeight:"calc(100vh - 64px)"
 
                     }}
 
-        >
+                >
 
-            <Outlet />  
 
-        </Box>
+                    <Outlet />
 
+
+                </Box>
+
+
+            </Box>
 
 
         </Box>
@@ -73,3 +82,7 @@ export default function DashboardLayout(){
     );
 
 }
+
+
+
+export default DashboardLayout;
