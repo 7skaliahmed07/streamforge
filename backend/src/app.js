@@ -32,6 +32,9 @@ const salesRoutes =
 const customerAnalyticsRoutes = 
     require("./routes/customerAnalytics.routes");
 
+const productAnalyticsRoutes = 
+    require("./routes/productAnalytics.routes");
+
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./docs/swagger");
@@ -81,6 +84,11 @@ app.use("/api/v1/sales",
 app.use(
     "/api/v1/customers/analytics",
     customerAnalyticsRoutes
+);
+
+app.use(
+    "/api/v1/products/analytics",
+    productAnalyticsRoutes
 );
 
 

@@ -149,7 +149,7 @@ export default function Sidebar(){
                     fontWeight={800}
                     >
 
-                    StreamForge
+                    Stream-Forge
 
                 </Typography>
 
