@@ -22,7 +22,7 @@ exports.getKPIs = async () => {
 
             COUNT(*) FILTER (
 
-                WHERE created_at >= NOW() - INTERVAL '30 days'
+                WHERE created_at >= NOW() - INTERVAL '10 days'
 
             ) AS new_customers,
 

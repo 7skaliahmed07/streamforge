@@ -41,6 +41,9 @@ const inventoryAnalyticsRoutes =
 const paymentAnalyticsRoutes =
     require("./routes/paymentAnalytics.routes");
 
+const geographicAnalyticsRoutes =
+    require("./routes/geographicAnalytics.routes");
+
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./docs/swagger");
@@ -106,6 +109,11 @@ app.use(
 app.use(
     "/api/v1/payments/analytics",
     paymentAnalyticsRoutes
+);
+
+app.use(
+    "/api/v1/geographic",
+    require("./routes/geographicAnalytics.routes")
 );
 
 
