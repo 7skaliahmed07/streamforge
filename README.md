@@ -1,5 +1,9 @@
 # 🚀 StreamForge
 
+<p align="center">
+  <img src="./Stream-forge-PART-1.png.png" alt="Architecture Diagram" width="900">
+</p>
+
 > **An End-to-End Business Intelligence Platform for Modern Retail Analytics**
 
 StreamForge is a production-inspired Business Intelligence platform built to demonstrate how modern data-driven applications transform raw business data into actionable insights.
