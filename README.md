@@ -1,7 +1,7 @@
 # 🚀 StreamForge
 
 <p align="center">
-  <img src="./Stream-Forge-Full-Architecture.png.png" alt="Architecture Diagram" width="900">
+  <img src="./Stream-Forge-Full-Architecture.png" alt="Architecture Diagram" width="900">
 </p>
 
 > **An End-to-End Business Intelligence Platform for Modern Retail Analytics**
