@@ -1,0 +1,15 @@
+==================== 2026-08-31T13:09:19.459249Z | 01a057f0-45df-7762-8413-8506451d1080 ====================
+13:09:19.459756 [info ]: Installing dbt project and profile setup
+13:09:19.467723 [info ]: Info Created .vscode/extensions.json with dbt extension recommendation
+13:09:19.467937 [info ]: Success Project created successfully!
+13:09:19.467965 [info ]: Info Project name: streamforge_analytics
+13:09:19.467977 [info ]: Info Project directory: streamforge_analytics
+13:09:19.468006 [info ]: Info Setting up your profile...
+13:09:19.468664 [info ]: Loading ~/.dbt/profiles.yml
+13:09:19.469333 [info ]: Info Creating new profile...
+13:10:28.464032 [info ]: Found dbt_cloud.yml configuration
+13:10:28.464115 [info ]: Found active project: Untitled Project (ID: 70506183131779)
+13:11:48.499001 [error]: dbt1001: Failed to get project selection: IO error: read interrupted
+13:11:48.558085 [info ]: 
+==================== Execution Summary =====================
+Finished 'init' with 1 error [2m 29s]
