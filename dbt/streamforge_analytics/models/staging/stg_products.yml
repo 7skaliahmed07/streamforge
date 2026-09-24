@@ -1,9 +1,37 @@
+version: 2
+
 models:
   - name: stg_products
-    description: Product (food and drink items that can be ordered) data with basic cleaning and transformation applied, one row per product.
+    description: Product data with basic cleaning and transformation applied, one row per product.
+
     columns:
       - name: product_id
         description: The unique key for each product.
         data_tests:
           - not_null
           - unique
+
+      - name: product_name
+        description: The name of the product.
+
+      - name: category
+        description: The product category.
+
+      - name: brand
+        description: The product brand.
+
+      - name: product_price
+        description: The product price in the stored currency.
+
+      - name: currency
+        description: The currency used for the product price.
+
+      - name: vat_percentage
+        description: The VAT percentage applied to the product.
+
+      - name: created_at
+        description: The timestamp when the product was created.
+
+      - name: updated_at
+        description: The timestamp when the product was last updated.
+        

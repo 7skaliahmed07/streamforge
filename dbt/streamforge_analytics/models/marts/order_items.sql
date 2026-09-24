@@ -1,66 +1,57 @@
-with
+WITH order_items AS (
 
-order_items as (
-
-    select * from {{ ref('stg_order_items') }}
-
-),
-
-
-orders as (
-
-    select * from {{ ref('stg_orders') }}
+    SELECT *
+    FROM {{ ref('stg_order_items') }}
 
 ),
 
-products as (
+orders AS (
 
-    select * from {{ ref('stg_products') }}
-
-),
-
-supplies as (
-
-    select * from {{ ref('stg_supplies') }}
+    SELECT *
+    FROM {{ ref('stg_orders') }}
 
 ),
 
-order_supplies_summary as (
+products AS (
 
-    select
-        product_id,
-
-        sum(supply_cost) as supply_cost
-
-    from supplies
-
-    group by 1
+    SELECT *
+    FROM {{ ref('stg_products') }}
 
 ),
 
-joined as (
+joined AS (
 
-    select
-        order_items.*,
+    SELECT
+        order_items.order_item_id,
+        order_items.order_id,
+        order_items.product_id,
+        order_items.quantity,
+        order_items.item_price,
 
-        orders.order_date,
+        orders.order_number,
+        orders.customer_id,
+        orders.order_status,
+        orders.total_amount,
+        orders.currency AS order_currency,
+        orders.shipping_city,
+        orders.created_at AS order_created_at,
 
         products.product_name,
+        products.category,
+        products.brand,
         products.product_price,
-        products.is_food_item,
-        products.is_drink_item,
+        products.currency AS product_currency,
+        products.vat_percentage
 
-        order_supplies_summary.supply_cost
+    FROM order_items
 
-    from order_items
+    LEFT JOIN orders
+        ON order_items.order_id = orders.order_id
 
-    left join orders on order_items.order_id = orders.order_id
-
-    left join products on order_items.product_id = products.product_id
-
-    left join order_supplies_summary
-        on order_items.product_id = order_supplies_summary.product_id
+    LEFT JOIN products
+        ON order_items.product_id = products.product_id
 
 )
 
-select * from joined
+SELECT *
+FROM joined

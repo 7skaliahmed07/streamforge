@@ -1,13 +1,38 @@
+version: 2
+
 models:
   - name: stg_orders
     description: Order data with basic cleaning and transformation applied, one row per order.
-    data_tests:
-      - dbt_utils.expression_is_true:
-          arguments:
-            expression: "order_total - tax_paid = subtotal"
+
     columns:
       - name: order_id
         description: The unique key for each order.
         data_tests:
           - not_null
           - unique
+
+      - name: customer_id
+        description: The customer who placed the order.
+        data_tests:
+          - not_null
+
+      - name: order_number
+        description: The business reference number for the order.
+
+      - name: order_status
+        description: The current status of the order.
+
+      - name: total_amount
+        description: The total order amount in the stored currency.
+
+      - name: currency
+        description: The currency used for the order amount.
+
+      - name: shipping_city
+        description: The city where the order is shipped.
+
+      - name: created_at
+        description: The timestamp when the order was created.
+
+      - name: updated_at
+        description: The timestamp when the order was last updated.

@@ -10,10 +10,7 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
-seeds:
-  # Builds seeds into '<your_schema_name>_raw'
-  streamforge_analytics:
-    +schema: raw
+
 
 models:
   streamforge_analytics:

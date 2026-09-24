@@ -1,34 +1,25 @@
-with
+WITH source AS (
 
-source as (
-
-    -- {# This references seed (CSV) data - try switching to {{ source('ecom', 'raw_orders') }} #}
-    select * from {{ ref('raw_orders') }}
+    SELECT *
+    FROM {{ source('streamforge', 'orders') }}
 
 ),
 
-renamed as (
+renamed AS (
 
-    select
-
-        ----------  ids
-        id as order_id,
-        store_id as location_id,
-        customer as customer_id,
-
-        ---------- numerics
-        subtotal as subtotal_cents,
-        tax_paid as tax_paid_cents,
-        order_total as order_total_cents,
-        {{ cents_to_dollars('subtotal') }} as subtotal,
-        {{ cents_to_dollars('tax_paid') }} as tax_paid,
-        {{ cents_to_dollars('order_total') }} as order_total,
-
-        ---------- timestamps
-        cast(ordered_at as date) as order_date
-
-    from source
+    SELECT
+        id AS order_id,
+        customer_id,
+        order_number,
+        order_status,
+        total_amount,
+        currency,
+        shipping_city,
+        created_at,
+        updated_at
+    FROM source
 
 )
 
-select * from renamed
+SELECT *
+FROM renamed

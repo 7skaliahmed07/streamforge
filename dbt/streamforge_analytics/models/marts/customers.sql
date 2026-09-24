@@ -1,58 +1,65 @@
-with
+WITH customers AS (
 
-customers as (
-
-    select * from {{ ref('stg_customers') }}
-
-),
-
-orders as (
-
-    select * from {{ ref('orders') }}
+    SELECT *
+    FROM {{ ref('stg_customers') }}
 
 ),
 
-customer_orders_summary as (
+orders AS (
 
-    select
-        orders.customer_id,
-
-        count(distinct orders.order_id) as count_lifetime_orders,
-        count(distinct orders.order_id) > 1 as is_repeat_buyer,
-        min(orders.order_date) as first_order_date,
-        max(orders.order_date) as last_order_date,
-        sum(orders.subtotal) as lifetime_spend_pretax,
-        sum(orders.tax_paid) as lifetime_tax_paid,
-        sum(orders.order_total) as lifetime_spend
-
-    from orders
-
-    group by 1
+    SELECT *
+    FROM {{ ref('stg_orders') }}
 
 ),
 
-joined as (
+customer_orders_summary AS (
 
-    select
+    SELECT
+        customer_id,
+
+        COUNT(DISTINCT order_id) AS lifetime_orders,
+
+        MIN(created_at::date) AS first_order_date,
+
+        MAX(created_at::date) AS last_order_date,
+
+        SUM(total_amount) AS lifetime_spend
+
+    FROM orders
+
+    GROUP BY customer_id
+
+),
+
+joined AS (
+
+    SELECT
         customers.*,
 
-        customer_orders_summary.count_lifetime_orders,
+        COALESCE(customer_orders_summary.lifetime_orders, 0)
+            AS lifetime_orders,
+
         customer_orders_summary.first_order_date,
+
         customer_orders_summary.last_order_date,
-        customer_orders_summary.lifetime_spend_pretax,
-        customer_orders_summary.lifetime_tax_paid,
-        customer_orders_summary.lifetime_spend,
 
-        case
-            when customer_orders_summary.is_repeat_buyer then 'returning'
-            else 'new'
-        end as customer_type
+        COALESCE(customer_orders_summary.lifetime_spend, 0)
+            AS lifetime_spend,
 
-    from customers
+        CASE
+            WHEN customer_orders_summary.lifetime_orders > 1
+                THEN 'returning'
+            WHEN customer_orders_summary.lifetime_orders = 1
+                THEN 'new'
+            ELSE 'no_orders'
+        END AS customer_type
 
-    left join customer_orders_summary
-        on customers.customer_id = customer_orders_summary.customer_id
+    FROM customers
+
+    LEFT JOIN customer_orders_summary
+        ON customers.customer_id = customer_orders_summary.customer_id
 
 )
 
-select * from joined
+SELECT *
+FROM joined

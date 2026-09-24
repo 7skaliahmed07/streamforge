@@ -1,41 +1,55 @@
+version: 2
+
 models:
   - name: order_items
+    description: Detailed sales item data combining order items with order and product information.
+
     columns:
       - name: order_item_id
+        description: The unique key for each order item.
         data_tests:
           - not_null
           - unique
+
       - name: order_id
+        description: The order associated with the item.
         data_tests:
+          - not_null
           - relationships:
               arguments:
-                to: ref('orders')
+                to: ref('stg_orders')
                 field: order_id
-unit_tests:
-  - name: test_supply_costs_sum_correctly
-    description: "Test that the counts of drinks and food orders convert to booleans properly."
-    model: order_items
-    given:
-      - input: ref('stg_supplies')
-        rows:
-          - {product_id: 1, supply_cost: 4.50}
-          - {product_id: 2, supply_cost: 3.50}
-          - {product_id: 2, supply_cost: 5.00}
-      - input: ref('stg_products')
-        rows:
-          - {product_id: 1}
-          - {product_id: 2}
-      - input: ref('stg_order_items')
-        rows:
-          - {order_id: 1, product_id: 1}
-          - {order_id: 2, product_id: 2}
-          - {order_id: 2, product_id: 2}
-      - input: ref('stg_orders')
-        rows:
-          - {order_id: 1}
-          - {order_id: 2}
-    expect:
-      rows:
-        - {order_id: 1, product_id: 1, supply_cost: 4.50}
-        - {order_id: 2, product_id: 2, supply_cost: 8.50}
-        - {order_id: 2, product_id: 2, supply_cost: 8.50}
+
+      - name: product_id
+        description: The product associated with the item.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+
+      - name: quantity
+        description: The number of units purchased.
+        data_tests:
+          - not_null
+
+      - name: item_price
+        description: The price recorded for the order item.
+        data_tests:
+          - not_null
+
+      - name: customer_id
+        description: The customer who placed the order.
+
+      - name: order_status
+        description: The current status of the order.
+
+      - name: product_name
+        description: The name of the purchased product.
+
+      - name: category
+        description: The category of the purchased product.
+
+      - name: brand
+        description: The brand of the purchased product.

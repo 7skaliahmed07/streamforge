@@ -1,23 +1,21 @@
-with
+WITH source AS (
 
-source as (
-
-    -- {# This references seed (CSV) data - try switching to {{ source('ecom', 'raw_items') }} #}
-    select * from {{ ref('raw_items') }}
+    SELECT *
+    FROM {{ source('streamforge', 'order_items') }}
 
 ),
 
-renamed as (
+renamed AS (
 
-    select
-
-        ----------  ids
-        id as order_item_id,
+    SELECT
+        id AS order_item_id,
         order_id,
-        sku as product_id
-
-    from source
+        product_id,
+        quantity,
+        price AS item_price
+    FROM source
 
 )
 
-select * from renamed
+SELECT *
+FROM renamed

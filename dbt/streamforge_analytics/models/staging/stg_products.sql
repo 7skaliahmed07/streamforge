@@ -1,35 +1,25 @@
-with
+WITH source AS (
 
-source as (
-
-    -- {# This references seed (CSV) data - try switching to {{ source('ecom', 'raw_products') }} #}
-    select * from {{ ref('raw_products') }}
+    SELECT *
+    FROM {{ source('streamforge', 'products') }}
 
 ),
 
-renamed as (
+renamed AS (
 
-    select
-
-        ----------  ids
-        sku as product_id,
-
-        ---------- text
-        name as product_name,
-        type as product_type,
-        description as product_description,
-
-
-        ---------- numerics
-        {{ cents_to_dollars('price') }} as product_price,
-
-        ---------- booleans
-        coalesce(type = 'jaffle', false) as is_food_item,
-
-        coalesce(type = 'beverage', false) as is_drink_item
-
-    from source
+    SELECT
+        id AS product_id,
+        name AS product_name,
+        category,
+        brand,
+        price AS product_price,
+        currency,
+        vat_percentage,
+        created_at,
+        updated_at
+    FROM source
 
 )
 
-select * from renamed
+SELECT *
+FROM renamed
