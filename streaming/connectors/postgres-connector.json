@@ -1,0 +1,20 @@
+{
+  "name": "streamforge-postgres-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+    "database.hostname": "streamforge-postgres",
+    "database.port": "5432",
+    "database.user": "streamforge_debezium",
+    "database.dbname": "streamforge",
+    "topic.prefix": "streamforge",
+    "plugin.name": "pgoutput",
+    "slot.name": "streamforge_debezium_slot",
+    "publication.name": "streamforge_publication",
+    "publication.autocreate.mode": "disabled",
+    "table.include.list": "public.customers,public.products,public.orders,public.order_items,public.payments",
+    "snapshot.mode": "initial",
+    "schema.history.internal.kafka.topic": "streamforge.schema-history",
+    "schema.history.internal.kafka.bootstrap.servers": "streamforge-kafka:9092"
+  }
+}
