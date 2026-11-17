@@ -28,3 +28,13 @@ logs/
 # Operating system
 .DS_Store
 .AppleDouble
+
+
+# Bronze data files
+data/bronze/
+
+# Silver data files
+/data/silver/
+
+# Spark and Hadoop checksum files
+*.crc

@@ -103,6 +103,8 @@ services:
 
     volumes:
       - ./streaming/spark/jobs:/opt/spark-apps/jobs:ro
+      - ./data/bronze:/opt/spark-data/bronze
+      - ./data/silver:/opt/spark-data/silver
       - spark_checkpoints:/opt/spark-apps/checkpoints
 
 
