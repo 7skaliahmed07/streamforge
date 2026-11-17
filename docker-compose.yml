@@ -93,6 +93,14 @@ services:
 
     depends_on:
       - kafka
+      - postgres
+
+    env_file:
+      - ./backend/.env
+
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
 
     working_dir: /opt/spark-apps
 
@@ -106,7 +114,6 @@ services:
       - ./data/bronze:/opt/spark-data/bronze
       - ./data/silver:/opt/spark-data/silver
       - spark_checkpoints:/opt/spark-apps/checkpoints
-
 
 volumes:
 

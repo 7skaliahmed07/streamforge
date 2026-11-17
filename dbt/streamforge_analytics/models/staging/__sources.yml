@@ -2,25 +2,22 @@ version: 2
 
 sources:
   - name: streamforge
-    schema: public
+    schema: silver
     database: streamforge
-    description: StreamForge retail transactional database.
+    description: StreamForge processed Silver datasets.
 
     tables:
       - name: customers
-        description: One record per customer.
+        description: Current customer records processed by Spark.
 
       - name: products
-        description: One record per product.
+        description: Current product records processed by Spark.
 
       - name: orders
-        description: One record per customer order.
+        description: Current customer orders processed by Spark.
 
       - name: order_items
-        description: One record per product item within an order.
-
-      - name: inventory
-        description: Current inventory information for products.
+        description: Current order item records processed by Spark.
 
       - name: payments
-        description: Payment information associated with orders.
+        description: Current payment records processed by Spark.

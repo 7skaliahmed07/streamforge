@@ -1,293 +1,99 @@
-# Data Flow Architecture
+# StreamForge Data Flow
 
-## Document Information
+## Overview
 
-| Item         | Value       |
-| ------------ | ----------- |
-| Project      | StreamForge |
-| Version      | 1.0         |
-| Author       | Uzair       |
-| Status       | Draft       |
-| Created      | 2026-07-26  |
-| Last Updated | 2026-07-26  |
+StreamForge moves retail data from an operational PostgreSQL database into analytical models.
 
----
+## Current and Planned Flow
 
-# Purpose
+```text
+Operational PostgreSQL
+          |
+          v
+       Debezium
+          |
+          v
+         Kafka
+          |
+          v
+   Spark Structured Streaming
+          |
+          v
+      Bronze Parquet
+          |
+          v
+      Spark Silver
+          |
+          v
+  PostgreSQL Silver Schema
+          |
+          v
+      dbt Staging
+          |
+          v
+      dbt Gold
+          |
+          v
+   Business Intelligence
+```
 
-This document explains how data moves through StreamForge from the moment a business event is created until it becomes an analytical insight.
+## Layer Responsibilities
 
-The purpose is to describe the complete end to end data pipeline.
+### Operational PostgreSQL
 
----
+Stores application records such as customers, products, orders, order items and payments.
 
-# Data Flow Overview
+### Debezium and Kafka
 
-StreamForge follows an event driven data architecture.
+Debezium captures PostgreSQL change events and publishes them to Kafka topics.
 
-The complete flow:
-User Action
+Kafka provides the event transport layer.
 
-↓
+### Bronze
 
-React Frontend
+Bronze stores raw CDC event envelopes in Parquet format. The raw events are retained for further processing and inspection.
 
-↓
+### Spark Silver
 
-Node.js Express API
+Spark interprets CDC events, handles data types and creates current state datasets for the five business entities.
 
-↓
+### PostgreSQL Silver
 
-PostgreSQL Database
+The Silver schema stores the initial current state datasets for analytical consumption.
 
-↓
+The initial loads are complete. Continuous synchronization is still planned.
 
-Kafka Event Streaming
+### dbt Staging
 
-↓
+dbt reads the Silver tables and creates consistent staging views.
 
-Spark Data Processing
+### dbt Gold
 
-↓
+dbt creates dimensions and facts for analytical queries and reporting.
 
-Data Warehouse
+### Business Intelligence
 
-↓
+The Gold warehouse is intended to support business dashboards and reporting.
 
-Power BI Dashboard
+## Current Implementation Status
 
----
+| Component | Status |
+|---|---|
+| Operational PostgreSQL | Implemented |
+| Debezium CDC capture | Implemented |
+| Kafka event transport | Implemented |
+| Bronze ingestion | Implemented |
+| Spark Silver processing | Implemented |
+| Initial PostgreSQL Silver load | Implemented |
+| Continuous Silver synchronization | Planned |
+| dbt staging | Implemented |
+| Gold dimensional models | Implemented |
+| dbt data tests | 68 passing |
+| Automated orchestration | Planned |
+| BI dashboard integration | Planned |
 
-# Step 1: User Interaction
+## Important Distinction
 
-The process begins when a user performs an action.
+The pipeline currently demonstrates CDC capture and processing through Spark Silver, followed by an initial load into PostgreSQL Silver.
 
-Examples:
-
-- Customer places an order.
-- Customer makes a payment.
-- Inventory quantity changes.
-
-The React frontend captures the user action and sends a request to the backend API.
-
----
-
-# Step 2: Backend Processing
-
-The Node.js Express API receives the request.
-
-Responsibilities:
-
-- Validate incoming data.
-- Apply business rules.
-- Authenticate the user.
-- Process the business operation.
-
-Example:
-
-A customer creates a new order.
-
-The backend validates:
-
-- Customer information.
-- Product availability.
-- Order details.
-
----
-
-# Step 3: Transaction Storage
-
-After successful validation, the backend stores the transaction data in PostgreSQL.
-
-Example:
-
-Order information:
-Order ID
-Customer ID
-Product ID
-Quantity
-Price
-Created Date
-
-PostgreSQL acts as the operational source of truth.
-
----
-
-# Step 4: Event Publishing
-
-After storing the transaction, the backend publishes an event to Kafka.
-
-Example event:
-Order Created Event
-
-{
-orderId: 1001,
-customerId: 500,
-amount: 250
-}
-
-Kafka provides reliable communication between application services and data processing systems.
-
----
-
-# Step 5: Stream Processing
-
-Apache Spark consumes events from Kafka.
-
-Spark performs:
-
-- Data validation.
-- Data cleaning.
-- Data transformation.
-- Data enrichment.
-
-Example:
-
-Raw event:
-Order Created
-Amount: 250
-
-Processed data:
-
-Daily Sales Record
-
-Date
-Customer Segment
-Product Category
-Revenue
-
----
-
-# Step 6: Data Warehouse Storage
-
-Processed data is loaded into the analytical warehouse.
-
-The warehouse stores data optimized for reporting and analysis.
-
-Example:
-
-Fact Tables:
-
-- Fact Orders.
-- Fact Payments.
-
-Dimension Tables:
-
-- Customer.
-- Product.
-- Date.
-
----
-
-# Step 7: Business Intelligence
-
-Power BI connects to the warehouse.
-
-Business users can view:
-
-Sales Dashboard:
-
-- Revenue trends.
-- Order volume.
-- Sales performance.
-
-Customer Dashboard:
-
-- Customer growth.
-- Customer behavior.
-
-Inventory Dashboard:
-
-- Product availability.
-- Stock movement.
-
----
-
-# Real Time Processing Flow
-
-StreamForge supports near real time analytics:
-Event Created
-
-↓
-
-Kafka
-
-↓
-
-Spark Processing
-
-↓
-
-Warehouse Update
-
-↓
-
-Dashboard Refresh
-
-This enables business teams to make decisions using fresh data.
-
----
-
-# Error Handling Flow
-
-If processing fails:
-
-1. Error is logged.
-
-2. Failed events are tracked.
-
-3. Processing can be retried.
-
-4. Monitoring alerts are generated.
-
----
-
-# Data Quality Checks
-
-The pipeline performs validation at multiple stages:
-
-## API Layer
-
-Checks:
-
-- Required fields.
-- Data format.
-- Business rules.
-
-## Processing Layer
-
-Checks:
-
-- Duplicate records.
-- Invalid values.
-- Missing information.
-
-## Warehouse Layer
-
-Checks:
-
-- Data consistency.
-- Reporting accuracy.
-
----
-
-# Design Benefits
-
-This architecture provides:
-
-- Real time data processing.
-- Reliable event communication.
-- Scalable data pipelines.
-- Better business visibility.
-- Separation between operational and analytical workloads.
-
----
-
-# Future Improvements
-
-Possible improvements:
-
-- Add data lake storage.
-- Implement machine learning pipelines.
-- Add automated data quality monitoring.
-- Add cloud based streaming infrastructure.
+It does not yet provide fully automated continuous synchronization from Spark Silver through Gold.

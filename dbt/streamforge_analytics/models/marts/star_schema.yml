@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: Calendar dimension used for sales and payment reporting.
+    columns:
+      - name: date_key
+        data_tests:
+          - not_null
+          - unique
+      - name: full_date
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_customer
+    description: Customer dimension with one row per customer.
+    columns:
+      - name: customer_key
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_product
+    description: Product dimension with one row per product.
+    columns:
+      - name: product_key
+        data_tests:
+          - not_null
+          - unique
+      - name: product_id
+        data_tests:
+          - not_null
+          - unique
+
+  - name: fact_sales
+    description: Sales fact with one row per order item.
+    columns:
+      - name: sales_fact_key
+        data_tests:
+          - not_null
+          - unique
+      - name: order_item_id
+        data_tests:
+          - not_null
+          - unique
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('orders')
+                field: order_id
+      - name: product_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_key
+      - name: customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: quantity
+        data_tests:
+          - not_null
+      - name: sales_amount
+        data_tests:
+          - not_null
+
+  - name: fact_payment
+    description: Payment fact with one row per payment.
+    columns:
+      - name: payment_fact_key
+        data_tests:
+          - not_null
+          - unique
+      - name: payment_id
+        data_tests:
+          - not_null
+          - unique
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('orders')
+                field: order_id
+      - name: customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: amount
+        data_tests:
+          - not_null

@@ -1,376 +1,293 @@
-# 🚀 StreamForge
+# StreamForge
 
 <p align="center">
-  <img src="./Stream-Forge-Full-Architecture.png" alt="Architecture Diagram" width="900">
+  <img src="./Stream-Forge-Full-Architecture.png" alt="StreamForge Architecture" width="900">
 </p>
 
-> **An End-to-End Business Intelligence Platform for Modern Retail Analytics**
+**An End to End Retail Data Engineering and Business Intelligence Platform**
 
-StreamForge is a production-inspired Business Intelligence platform built to demonstrate how modern data-driven applications transform raw business data into actionable insights.
+StreamForge is a production inspired retail data platform that demonstrates how operational business data can be captured, processed, transformed and prepared for analytical reporting.
 
-The project simulates a real-world retail analytics environment by combining a scalable backend, relational database, analytics APIs, and an interactive frontend dashboard.
+The project combines full stack development, PostgreSQL, change data capture, Apache Kafka, Apache Spark and dbt to build a modern data engineering architecture.
 
-Unlike a traditional dashboard project, StreamForge follows a layered architecture where business data is collected, processed, analyzed, and presented through dedicated analytics modules.
+## 1. Business Problem
 
----
+Retail businesses generate data across customers, products, orders, payments and inventory.
 
-# 📖 Project Overview
+When this information is spread across systems, business teams can experience:
 
-Modern organizations generate massive amounts of operational data every day. Customer information, orders, payments, products, and inventory records often exist across multiple systems, making it difficult for business teams to obtain meaningful insights.
+- Delayed reporting.
+- Inconsistent business information.
+- Slow inventory decisions.
+- Limited customer insights.
+- Difficulty monitoring sales performance.
 
-StreamForge addresses this challenge by providing a centralized Business Intelligence platform capable of delivering:
+StreamForge aims to provide a centralized data platform that transforms operational records into reliable analytical datasets.
 
-* Customer Analytics
-* Product Analytics
-* Payment Analytics
-* Geographic Analytics
-* Sales Analytics
-* Inventory Analytics
+## 2. Architecture
 
-The platform exposes analytics through REST APIs and visualizes them using interactive dashboards designed for executives, analysts, and business users.
-
----
-
-# 🎯 Project Objectives
-
-The primary objectives of StreamForge are:
-
-* Design a scalable full-stack analytics platform
-* Build clean REST APIs following layered architecture
-* Develop interactive executive dashboards
-* Implement realistic business analytics using SQL
-* Demonstrate software engineering and system design skills
-* Serve as the foundation for an enterprise-grade Data Engineering platform
-
----
-
-# 🏗️ Architecture
-
-```
-                    React + TypeScript
-                           │
-                           │
-                  React Query + Axios
-                           │
-                           ▼
-                 Node.js + Express APIs
-                           │
-                           ▼
-                  Business Service Layer
-                           │
-                           ▼
-                     PostgreSQL Database
-                           │
-        ┌──────────┬──────────┬──────────┐
-        │          │          │          │
-    Customers   Orders   Products   Payments
-        │
-    Inventory
+```text
+Operational PostgreSQL
+          |
+          v
+       Debezium
+          |
+          v
+         Kafka
+          |
+          v
+   Spark Structured Streaming
+          |
+          v
+      Bronze Parquet
+          |
+          v
+      Spark Silver
+          |
+          v
+  PostgreSQL Silver Schema
+          |
+          v
+      dbt Staging
+          |
+          v
+      dbt Gold
+          |
+          v
+   Business Intelligence
 ```
 
-The application follows a layered architecture that separates presentation, business logic, and data access, making the system easier to maintain, extend, and scale.
+The architecture separates operational storage, event ingestion, data processing and analytical modelling.
 
----
+The initial PostgreSQL Silver load and Gold warehouse are implemented. Continuous synchronization and automated orchestration remain under development.
 
-# ✨ Features
+## 3. Technology Stack
 
-## Executive Dashboard
+| Area | Technologies |
+|---|---|
+| Frontend | React, TypeScript, Material UI |
+| Backend | Node.js, Express.js |
+| Operational Database | PostgreSQL |
+| Change Data Capture | Debezium |
+| Event Streaming | Apache Kafka |
+| Data Processing | Apache Spark |
+| Data Lake Storage | Parquet |
+| Transformation | dbt |
+| Data Warehouse | PostgreSQL |
+| Infrastructure | Docker, Docker Compose |
+| Analytics | SQL, dimensional modelling |
+| Version Control | Git, GitHub |
 
-* Business KPIs
-* Revenue Overview
-* Customer Overview
-* Product Overview
-* Payment Overview
-* Inventory Summary
+## 4. Implemented Features
 
----
+### Operational Platform
 
-## Customer Analytics
+- Retail relational database.
+- Customer, product, order, order item and payment data.
+- Backend REST API.
+- Database migrations and seed data.
 
-* Customer KPIs
-* Customer Growth
-* Customer Segmentation
-* Top Customers
-* Geographic Distribution
+### Change Data Capture
 
----
+- PostgreSQL logical replication configuration.
+- Debezium PostgreSQL connector.
+- Kafka topics for business entities.
+- CDC event capture.
 
-## Product Analytics
+### Data Engineering
 
-* Product KPIs
-* Product Revenue
-* Brand Revenue
-* Category Revenue
-* Inventory Value
-* Product Pricing
-* Low Stock Analysis
-* Top Performing Products
+- Bronze raw event ingestion using Spark Structured Streaming.
+- Parquet storage partitioned by source table and event date.
+- Silver event processing.
+- Current state datasets for five business entities.
+- Data type handling and delete filtering.
+- Initial Spark Silver to PostgreSQL Silver loading.
 
----
+### Analytics Engineering
 
-## Payment Analytics
+- Five dbt staging models.
+- Customer dimension.
+- Product dimension.
+- Date dimension.
+- Sales fact.
+- Payment fact.
+- Existing business marts.
+- Data quality tests.
 
-* Payment KPIs
-* Payment Method Distribution
-* Payment Status Analysis
-* Monthly Revenue Trends
+### Data Validation
 
----
+The latest complete dbt test run passed all 68 tests with zero warnings and zero errors.
 
-## Geographic Analytics
+The current Silver datasets contain:
 
-* Geographic KPIs
-* Customers by Country
-* Customers by City
-* Revenue by City
+| Entity | Records |
+|---|---:|
+| Customers | 10,000 |
+| Products | 500 |
+| Orders | 100,000 |
+| Order Items | 299,390 |
+| Payments | 100,000 |
+| Total | 509,890 |
 
----
+## 5. Gold Data Warehouse
 
-## Sales Analytics
+The Gold layer follows a star schema designed for analytical reporting.
 
-* Monthly Sales
-* Revenue Trends
-* Order Analytics
-* Business Performance Metrics
+### Dimensions
 
----
+| Model | Grain |
+|---|---|
+| dim_customer | One row per customer |
+| dim_product | One row per product |
+| dim_date | One row per calendar date |
 
-## Inventory Analytics
+### Facts
 
-* Inventory KPIs
-* Stock Levels
-* Warehouse Analysis
-* Inventory Value
-* Low Stock Monitoring
+| Model | Grain |
+|---|---|
+| fact_sales | One row per order item |
+| fact_payment | One row per payment |
 
----
+The sales fact contains quantity, unit price and calculated sales amount.
 
-# 🛠️ Technology Stack
+The payment fact contains payment amount, status and payment method.
 
-## Frontend
+## 6. Repository Structure
 
-* React
-* TypeScript
-* Material UI
-* React Query
-* Axios
-* Recharts
-
----
-
-## Backend
-
-* Node.js
-* Express.js
-* REST APIs
-
----
-
-## Database
-
-* PostgreSQL
-* SQL
-* Relational Data Modeling
-
----
-
-## Development
-
-* Docker
-* Git
-* GitHub
-
----
-
-# 📂 Project Structure
-
-```
+```text
 streamforge/
-
-├── frontend/
-│   ├── src/
-│   │   ├── pages/
-│   │   ├── hooks/
-│   │   ├── services/
-│   │   ├── components/
-│   │   └── layouts/
-│
 ├── backend/
-│   ├── controllers/
-│   ├── routes/
-│   ├── services/
-│   ├── middleware/
-│   └── config/
-│
+├── frontend/
 ├── database/
 │   ├── migrations/
-│   └── seeds/
-│
-├── docs/
-│
-└── docker/
+│   ├── seeds/
+│   └── docs/
+├── dbt/
+│   └── streamforge_analytics/
+│       ├── models/
+│       │   ├── staging/
+│       │   └── marts/
+│       ├── seeds/
+│       └── macros/
+├── streaming/
+│   └── spark/
+│       └── jobs/
+├── warehouse/
+├── infrastructure/
+├── docker/
+├── scripts/
+├── data/
+└── docs/
+    ├── 01-business/
+    ├── 02-requirements/
+    ├── 03-architecture/
+    ├── 04-api/
+    ├── 05-database/
+    ├── 06-deployment/
+    ├── 07-testing/
+    ├── 08-monitoring/
+    ├── 09-decisions/
+    ├── 10-roadmap/
+    └── images/
 ```
 
----
+## 7. Running the Project
 
-# 📊 Business Intelligence Modules
+### Start Infrastructure
 
-The platform currently includes multiple analytics domains:
+From the project root:
 
-| Module               | Status |
-| -------------------- | ------ |
-| Overview Dashboard   | ✅      |
-| Customer Analytics   | ✅      |
-| Product Analytics    | ✅      |
-| Payment Analytics    | ✅      |
-| Geographic Analytics | ✅      |
-| Sales Analytics      | ✅      |
-| Inventory Analytics  | ✅      |
+```bash
+docker compose up -d
+```
 
----
+Check running services:
 
-# 🗄️ Database Design
+```bash
+docker compose ps
+```
 
-The system is centered around a relational retail database.
-
-Core entities include:
-
-* Customers
-* Orders
-* Order Items
-* Products
-* Payments
-* Inventory
-
-Relationships are implemented using primary and foreign keys to ensure data consistency and realistic business modeling.
-
----
-
-# 📈 Analytics
-
-StreamForge performs business analytics directly on transactional data using optimized SQL queries.
-
-Examples include:
-
-* Revenue Analysis
-* Customer Segmentation
-* Monthly Growth
-* Product Performance
-* Payment Success Rates
-* Geographic Distribution
-* Inventory Monitoring
-
----
-
-# 🚀 Running the Project
-
-## Backend
+### Backend
 
 ```bash
 cd backend
-
 npm install
-
 npm run dev
 ```
 
----
-
-## Frontend
+### dbt
 
 ```bash
-cd frontend
+cd dbt/streamforge_analytics
 
-npm install
-
-npm run dev
+dbt debug
+dbt parse
+dbt run
+dbt test
 ```
 
----
+Configure the required database credentials and environment variables before running the services.
 
-## Database
+## 8. Documentation
 
-Configure PostgreSQL and update the environment variables before starting the backend.
+Detailed technical documentation is available under `docs/`.
 
----
+Important documents:
 
-# 📸 Screenshots
+- Business problem and requirements.
+- System architecture and data flow.
+- Database design.
+- Data warehouse design.
+- dbt validation.
+- Architecture decision records.
 
-The following screenshots will be added after completing the project.
+## 9. Current Limitations
 
-* Executive Dashboard
-* Customer Analytics
-* Product Analytics
-* Payment Analytics
-* Geographic Analytics
-* Sales Analytics
-* Inventory Analytics
+The project is still under development.
 
----
+- Continuous Spark Silver to PostgreSQL Silver synchronization is not implemented.
+- Source delete propagation to PostgreSQL Silver needs implementation.
+- Customer and product dimension keys need a stable strategy.
+- Gold models currently use table materialization.
+- Automated pipeline orchestration is not complete.
+- Power BI dashboard integration is planned.
+- Monitoring and recovery procedures need further development.
 
-# 🧠 Engineering Principles
+## 10. Roadmap
 
-This project emphasizes:
+### Phase 1: Business Intelligence Platform
 
-* Clean Architecture
-* Separation of Concerns
-* Layered Backend Design
-* Reusable Components
-* Modular APIs
-* Scalable Folder Structure
-* Maintainable Codebase
-* Business-Oriented Analytics
+- Retail operational database.
+- Backend REST APIs.
+- Business analytics.
+- Interactive frontend.
 
----
+### Phase 2: Data Engineering Platform
 
-# 🗺️ Roadmap
+- PostgreSQL change data capture.
+- Debezium and Kafka integration.
+- Spark Bronze and Silver processing.
+- PostgreSQL Silver integration.
+- dbt staging and Gold dimensional models.
 
-## ✅ Phase 1 — Business Intelligence Platform
+### Phase 3: Production Data Platform
 
-* Interactive Dashboard
-* Analytics APIs
-* SQL Analytics
-* Business KPIs
-* Full Stack Application
+- Stable dimension key management.
+- Continuous idempotent data synchronization.
+- Delete propagation.
+- Incremental warehouse transformations.
+- Workflow orchestration.
+- Monitoring and recovery.
 
----
+### Phase 4: Business Intelligence
 
-## 🚧 Phase 2 — Data Engineering Platform
+- Power BI or Tableau integration.
+- Executive dashboards.
+- Sales and payment reporting.
+- Customer and product analytics.
 
-The next phase transforms StreamForge into a complete modern data platform by introducing:
+## 11. Project Purpose
 
-* Apache Kafka
-* Apache Spark
-* Data Warehouse
-* dbt
-* Apache Airflow
-* Dimensional Modeling
-* ETL/ELT Pipelines
-* Power BI / Tableau Dashboards
+StreamForge is a practical engineering project intended to demonstrate full stack development, data engineering, analytics engineering, distributed data processing and dimensional modelling.
 
-This evolution demonstrates the complete lifecycle from transactional systems to enterprise-scale analytics.
-
----
-
-# 🎥 Project Walkthrough
-
-A complete technical walkthrough will accompany this project, covering:
-
-* Business Problem
-* System Architecture
-* Database Design
-* Backend Development
-* Frontend Development
-* Analytics Implementation
-* Dashboard Demonstration
-* Future Roadmap
-
----
-
-# 👨‍💻 Purpose
-
-StreamForge was built as a portfolio project to demonstrate full-stack software engineering, analytics engineering, and business intelligence skills through a production-inspired architecture suitable for real-world enterprise applications.
-
----
-
-## ⭐ If you found this project useful, consider giving it a star.
+The long term objective is to build a complete retail data platform from operational transactions to business intelligence.
